@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form id="form" action="xxxxx" method="get">
+    <input type="text" name="yyy" value="1">
+    <input type="text" name="zzz" value="2">
+    <input type="submit">
+</form>
+<script>
+    form.addEventListener('submit',function(e){
+        e.preventDefault()
+        let yyy=form.yyy.value
+        let zzz=form.zzz.value
+        let request = new XMLHttpRequest()
+        request.onload = function(){
+                console.log(request.responseText)
+        }
+        request.open('GET',`/xxx?yyy=${yyy}&zzz=${zzz}`)
+        request.send()
+    })
+</script>
+</body>
+</html>
