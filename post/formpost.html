@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .errorMessage {
+            display: none;
+        }
+        .error {
+            border-color: red;
+        }
+        .error + .errorMessage {
+            display: inline;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<form action="/login" method="post" id="login" class="login">
+    <p>
+        <label>
+            姓名：
+            <input type="text" name="username">
+            <span class="errorMessage">错误</span></label>
+    </p>
+    <p>
+        <label>
+            密码：
+            <input type="password" name="password">
+            <span class="errorMessage">错误</span>
+        </label>
+        </p>
+    <p><input type="submit"></p>
+</form>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script>
+    login.addEventListener('submit',function(e){
+        e.preventDefault()
+        let username= login.username.value
+        let password= login.password.value
+        let valid=true
+        $('.error').removeClass('error')
+        if($.trim(username)===''){
+            $('input[name="username"]').addClass('error').next('.errorMessage').text('用户名不能为空')
+            valid=false
+        }
+        if(password === ''){
+            $('input[name="password"]').addClass('error').next('.errorMessage').text('密码不能为空')
+            valid=false
+        }
+        if(!valid){return}
+
+
+//        let request = new XMLHttpRequest()
+//        request.onreadystatechange = function(){
+//            if(request.readyState === 4){ // 响应下载完了
+//                if(request.status >= 400){
+//                    let {errors} = JSON.parse(request.responseText)
+//                    for(var key in errors){
+//                        let value = errors[key]
+//                        $(`input[name="${key}"]`).addClass('error')
+//                            .next('.errorMessage').text(value)
+//                    }
+//                }else{
+//                    location.href='/home'
+//                }
+//
+//
+//            }
+//        }
+
+
+        let request = new XMLHttpRequest()
+        request.onreadystatechange = function () {
+            if (request.readyState === 4) {
+                if (request.status >= 400) {
+                    let {errors} =JSON.parse(request.responseText)
+                    for (var key in errors) {
+                        let value = errors[key]
+                        $(`input[name="${key}"]`).addClass('error').next('.errorMessage').text(value)
+                    }
+                } else {
+                    location.href = '/home'
+                }
+            }
+        }
+        request.open('POST',login.action)
+        request.send(`username=${username}&password=${password}`)
+
+
+    })
+</script>
+</body>
+</html>
